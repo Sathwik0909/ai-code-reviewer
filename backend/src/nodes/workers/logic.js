@@ -1,9 +1,6 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { WorkerOutputSchema } from "../../state.js";
 import { llm } from "../../utils/getLLM.js";
-
-
 
 const SYSTEM = `You are a logic and correctness reviewer.
 
@@ -29,11 +26,17 @@ export async function logicWorker(payload) {
     new SystemMessage(SYSTEM),
     new HumanMessage(
       `Focus files: ${task.focus_files.join(", ")}\n` +
-      `Checklist:\n- ${task.checklist.join("\n- ")}\n\n` +
-      `Diff:\n${diff}`
+        `Checklist:\n- ${task.checklist.join("\n- ")}\n\n` +
+        `Diff:\n${diff}`,
     ),
   ]);
 
   console.log(`  🧠 Logic worker: ${result.findings.length} findings`);
-  return { findings: result.findings };
+
+  const correctedFindings = result.findings.map((f) => ({
+    ...f,
+    category: "logic", 
+  }));
+
+  return { findings: correctedFindings };
 }

@@ -37,5 +37,10 @@ export async function securityWorker(payload) {
   ]);
 
   console.log(`  🔒 Security worker: ${result.findings.length} findings`);
-  return { findings: result.findings };
+  const correctedFindings = result.findings.map((f) => ({
+    ...f,
+    category: "security", 
+  }));
+
+  return { findings: correctedFindings };
 }

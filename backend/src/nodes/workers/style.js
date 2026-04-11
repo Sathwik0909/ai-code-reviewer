@@ -1,4 +1,3 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { WorkerOutputSchema } from "../../state.js";
 import { llm } from "../../utils/getLLM.js";
@@ -34,5 +33,10 @@ export async function styleWorker(payload) {
   ]);
 
   console.log(`  🎨 Style worker: ${result.findings.length} findings`);
-  return { findings: result.findings };
+  const correctedFindings = result.findings.map((f) => ({
+    ...f,
+    category: "style", 
+  }));
+
+  return { findings: correctedFindings };
 }

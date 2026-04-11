@@ -5,6 +5,13 @@ const SEVERITY_EMOJI = {
   suggestion: "💡",
 };
 
+const RISK_EMOJI = {
+  low:      "🟢",
+  medium:   "🟡",
+  high:     "🟠",
+  critical: "🔴",
+};
+
 const SEVERITY_ORDER = ["critical", "major", "minor", "suggestion"];
 
 export function formatReport(plan, allFindings, score) {
@@ -24,7 +31,7 @@ export function formatReport(plan, allFindings, score) {
   // Header
   lines.push(`# Code Review Report`);
   lines.push(`\n**PR Summary:** ${plan.pr_summary}`);
-  lines.push(`**Risk Level:** ${SEVERITY_EMOJI[plan.overall_risk]} ${plan.overall_risk.toUpperCase()}`);
+  lines.push(`**Risk Level:** ${RISK_EMOJI[plan.overall_risk]} ${plan.overall_risk.toUpperCase()}`);
   lines.push(`**Score:** ${score}/100`);
   lines.push(
     `**Findings:** ${allFindings.length} total — ` +

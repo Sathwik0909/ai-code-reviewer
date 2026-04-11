@@ -1,4 +1,3 @@
-import { ChatOpenAI } from "@langchain/openai";
 import { SystemMessage, HumanMessage } from "@langchain/core/messages";
 import { WorkerOutputSchema } from "../../state.js";
 import { llm } from "../../utils/getLLM.js";
@@ -33,5 +32,10 @@ export async function testingWorker(payload) {
   ]);
 
   console.log(`  🧪 Testing worker: ${result.findings.length} findings`);
-  return { findings: result.findings };
+  const correctedFindings = result.findings.map((f) => ({
+    ...f,
+    category: "testing", 
+  }));
+
+  return { findings: correctedFindings };
 }
